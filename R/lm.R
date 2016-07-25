@@ -37,3 +37,13 @@ model.params <- c("beta", "beta.belong", "sigma")
 
 fit <- jags(model.data, NULL, model.params, model, n.iter=10000)
 fit
+
+# compare to lm
+lm(y ~ X - 1)
+
+# compare to penalized regression
+library(glmnet)
+fit <- glmnet(X[, 2:7], y, "gaussian", alpha=0) # ridge
+coef(fit)
+fit <- glmnet(X[, 2:7], y, "gaussian", alpha=1) # lasso
+coef(fit)

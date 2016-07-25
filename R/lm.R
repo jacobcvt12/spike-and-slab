@@ -15,7 +15,10 @@ model <- function() {
     
     # Prior for beta
     for(j in 1:7) {
-        beta[j] ~ dnorm(0,0.0001)
+        beta[j] <- beta.simp[j] * beta.belong[j]
+        beta.simp[j] ~ dnorm(0,0.0001)
+        beta.belong[j] ~ dbern(beta.prob[j])
+        beta.prob[j] ~ dbeta(1, 1)
     }
     
     # Prior for the inverse variance
@@ -30,7 +33,7 @@ X <- data[, 2:8]
 n <- nrow(X)
 
 model.data <- c("y", "X", "n")
-model.params <- c("beta", "sigma")
+model.params <- c("beta", "beta.belong", "sigma")
 
-fit <- jags(model.data, NULL, model.params, model, n.iter=5000)
+fit <- jags(model.data, NULL, model.params, model, n.iter=10000)
 fit

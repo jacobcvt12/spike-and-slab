@@ -1,2 +1,4 @@
 *.pdf
 *.RDS
+.Rproj.user
+spike-and-slab.Rproj
